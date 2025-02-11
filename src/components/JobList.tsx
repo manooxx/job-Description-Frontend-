@@ -5,7 +5,7 @@ import { MdOutlineNavigateNext } from "react-icons/md";
 import { MdOutlineNavigateBefore } from "react-icons/md";
 
 const JobList = () => {
-    const { filteredJobs } = useJobContext();
+    const { filteredJobs, loading } = useJobContext();
     const totalJobs = filteredJobs.length;
     const jobsPerPage = 6;
     const [currentPage, setCurrentPage] = useState(1);
@@ -21,6 +21,8 @@ const JobList = () => {
     const goToNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
     const goToPrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 
+   
+
     return (
         <div className="py-5">
             <div className="flex pb-10 justify-between items-center">
@@ -34,9 +36,10 @@ const JobList = () => {
 
           
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-                {currentJobs.map((job, index) => (
+                {(!loading)?
+                (currentJobs.map((job, index) => (
                     <JobCard key={index} job={job} />
-                ))}
+                ))): (<div>Loading Jobs...</div>)}
             </div>
 
             

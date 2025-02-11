@@ -27,6 +27,7 @@ interface JobContextType {
   fetchJobs: () => void;
   updateFilters: (newFilters: Partial<Filters>) => void;
   applyFilters: () => void;
+  loading: boolean
 }
 
 const JobContext = createContext<JobContextType | undefined>(undefined);
@@ -34,6 +35,8 @@ const JobContext = createContext<JobContextType | undefined>(undefined);
 export const JobProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(false);
+
   const [filters, setFilters] = useState<Filters>({
     company_location: "",
     experience_level: "",
@@ -43,11 +46,14 @@ export const JobProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Fetch jobs from API
   const fetchJobs = async () => {
     try {
+      setLoading(true)
       const data = await fetchJobsApi();
       setJobs(data);
       setFilteredJobs(data); 
     } catch (err) {
       console.error("Error fetching jobs:", err);
+    }finally {
+      setLoading(false); // End loading
     }
   };
 
@@ -97,7 +103,7 @@ export const JobProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [filters, jobs]);
 
   return (
-    <JobContext.Provider value={{ jobs, filteredJobs, fetchJobs, updateFilters, applyFilters }}>
+    <JobContext.Provider value={{ jobs, filteredJobs, fetchJobs, updateFilters, applyFilters, loading }}>
       {children}
     </JobContext.Provider>
   );

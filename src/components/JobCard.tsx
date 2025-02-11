@@ -97,7 +97,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
             </div>
 
             <div className="flex w-full px-2 justify-between items-center">
-                <p className="flex items-end">{formatSalary(job.salary_per_month)} / <span className="text-slate-500 text-xs">Monthly</span></p>
+                <p className="flex items-end">${formatSalary(job.salary_per_month)} / <span className="text-slate-500 text-xs">Monthly</span></p>
                 <button onClick={() => setOpen(true)} className="border dark:bg-slate-700 shadow-lg px-4 rounded-full text-sm py-1 text-white bg-black text-center">Details</button>
             </div>
             <JobDialog job={job} open={open} onClose={() => setOpen(false)} bgColorWithOpacity={bgColorWithOpacity}   stars={generateStars(job.company_rating)}  />
